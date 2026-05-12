@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la /Users/jarintabata/Documents/Productive/Propper/www/ 2>/dev/null && ls -la /Users/jarintabata/Documents/Productive/Propper/ 2>/dev/null)",
+      "mcp__Claude_Preview__preview_start"
+    ]
+  }
+}
