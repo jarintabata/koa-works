@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Propper — AI for owner-operators of commercial property</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper:        #F7F7F5;
+    --paper-deep:   #EFEFEC;
+    --rule:         #D9D9D3;
+    --ink:          #232323;
+    --ink-soft:     #4A4A47;
+    --ink-muted:    #8A8A85;
+    --accent:       #4F7A28;
+    --accent-deep:  #3B5C1E;
+    --accent-soft:  #A8C684;
+    --accent-tint:  #E1ECCF;
+    --good:         #4F7A28;
+    --warn:         #C9A11A;
+    --alert:        #A23A2A;
+    --sans: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono: 'Geist Mono', ui-monospace, monospace;
+  }
+  html { scroll-behavior: smooth; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; background: none; border: none; color: inherit; }
+  em, i { font-style: normal; }
+
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+
+  /* ─── Nav ─── */
+  nav.site {
+    position: sticky; top: 0; z-index: 20;
+    background: var(--paper); border-bottom: 1px solid var(--rule);
+  }
+  nav.site .inner {
+    max-width: 1200px; margin: 0 auto; padding: 16px 40px;
+    display: flex; align-items: center; gap: 32px;
+  }
+  .brand { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .brand-mark { width: 24px; height: 24px; }
+  .brand-text {
+    font-family: var(--sans); font-weight: 600; font-size: 20px;
+    letter-spacing: -0.035em;
+    font-feature-settings: "kern" 1, "ss01" 1;
+  }
+  .nav-links { display: flex; gap: 24px; font-size: 14px; color: var(--ink-soft); }
+  .nav-links a { transition: color 120ms ease; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-cta { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+  .beta-pill {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.10em;
+    text-transform: uppercase; padding: 4px 10px;
+    border: 1px solid var(--rule); border-radius: 999px; color: var(--ink-soft);
+  }
+
+  /* ─── Buttons ─── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px; font-size: 13px; font-weight: 500;
+    border-radius: 4px; border: 1px solid var(--rule);
+    background: var(--paper); color: var(--ink);
+    transition: border-color 120ms ease, background 120ms ease;
+  }
+  .btn:hover { border-color: var(--ink-muted); }
+  .btn.primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .btn.primary:hover { background: var(--ink-soft); border-color: var(--ink-soft); }
+  .btn.accent { background: var(--accent); color: var(--paper); border-color: var(--accent); }
+  .btn.accent:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+  .btn.ghost { background: transparent; color: var(--paper); border: 1px solid rgba(247,247,245,0.25); }
+  .btn.ghost:hover { border-color: rgba(247,247,245,0.6); }
+  .btn.large { padding: 12px 20px; font-size: 14px; }
+  .btn svg { width: 13px; height: 13px; }
+
+  /* ─── Hero ─── */
+  .hero { padding: 96px 0 72px; border-bottom: 1px solid var(--rule); }
+  .eyebrow {
+    font-family: var(--mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.14em; color: var(--accent);
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-bottom: 24px;
+  }
+  .eyebrow .line { width: 24px; height: 1px; background: var(--accent); }
+  h1.hero-title {
+    font-family: var(--sans); font-weight: 600; font-size: 80px;
+    line-height: 1.02; letter-spacing: -0.028em;
+    max-width: 14ch; margin-bottom: 28px;
+  }
+  h1.hero-title em { color: var(--accent); font-weight: 700; }
+  .hero-lede {
+    font-size: 19px; line-height: 1.55; color: var(--ink-soft);
+    max-width: 540px; margin-bottom: 36px;
+  }
+  .hero-lede strong { color: var(--ink); font-weight: 500; }
+  .hero-cta { display: flex; gap: 12px; align-items: center; margin-bottom: 48px; }
+  .hero-cta .note { font-size: 12px; color: var(--ink-muted); font-family: var(--mono); }
+  .hero-partners {
+    display: flex; align-items: center; gap: 28px;
+    padding-top: 32px; border-top: 1px solid var(--rule);
+  }
+  .hero-partners-label {
+    font-family: var(--mono); font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.10em; color: var(--ink-muted);
+  }
+  .partner-names { display: flex; gap: 16px; align-items: center; }
+  .partner-names span { font-size: 14px; color: var(--ink-soft); }
+  .partner-sep { color: var(--rule); font-family: var(--mono); }
+  .partner-meta { font-family: var(--mono); font-size: 12px; color: var(--ink-muted); }
+
+  /* Hero product screenshot */
+  .hero-visual {
+    margin-top: 56px;
+    border: 1px solid var(--rule); border-radius: 8px; overflow: hidden;
+    background: var(--paper-deep);
+    box-shadow: 0 24px 72px -20px rgba(35,35,35,0.18);
+  }
+  .window-chrome {
+    display: flex; align-items: center; gap: 8px; padding: 10px 14px;
+    border-bottom: 1px solid var(--rule); background: var(--paper-deep);
+  }
+  .window-chrome .dots { display: flex; gap: 6px; }
+  .window-chrome .wdot { width: 10px; height: 10px; border-radius: 50%; background: var(--rule); }
+  .window-url {
+    margin: 0 auto; font-family: var(--mono); font-size: 11px;
+    color: var(--ink-muted); padding: 3px 12px;
+    background: var(--paper); border-radius: 4px; border: 1px solid var(--rule);
+  }
+  .hero-visual-body {
+    display: grid; grid-template-columns: 180px 1fr 300px;
+    background: var(--paper); min-height: 460px;
+  }
+  .hv-side {
+    background: var(--paper-deep); border-right: 1px solid var(--rule);
+    padding: 16px 12px;
+  }
+  .hv-label {
+    font-family: var(--mono); font-size: 9px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--ink-muted);
+    padding: 0 6px; margin: 14px 0 6px;
+  }
+  .hv-label:first-child { margin-top: 0; }
+  .hv-item {
+    padding: 5px 8px; font-size: 12px; color: var(--ink-soft);
+    border-radius: 3px; display: flex; align-items: center; gap: 6px;
+  }
+  .hv-item.active { background: var(--paper); color: var(--ink); font-weight: 500; }
+  .hv-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+  .hv-main { padding: 24px 28px; }
+  .hv-eye {
+    font-family: var(--mono); font-size: 10px; color: var(--ink-muted);
+    letter-spacing: 0.10em; text-transform: uppercase; margin-bottom: 10px;
+  }
+  .hv-h {
+    font-size: 20px; font-weight: 600; line-height: 1.2;
+    letter-spacing: -0.02em; margin-bottom: 10px;
+  }
+  .hv-h em { color: var(--accent); font-weight: 700; }
+  .hv-p { font-size: 13px; color: var(--ink-soft); line-height: 1.55; max-width: 46ch; margin-bottom: 20px; }
+  .hv-card { border-top: 1px solid var(--rule); padding: 12px 0; }
+  .hv-tag {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.10em;
+    text-transform: uppercase; padding: 2px 6px; border-radius: 3px;
+    display: inline-block; margin-bottom: 6px;
+  }
+  .hv-tag.action { background: var(--accent); color: var(--paper); }
+  .hv-tag.urgent { background: var(--alert); color: var(--paper); }
+  .hv-card-title { font-size: 14px; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 3px; }
+  .hv-card-body { font-size: 12px; color: var(--ink-soft); line-height: 1.5; }
+  .hv-chat {
+    background: var(--paper-deep); border-left: 1px solid var(--rule);
+    padding: 16px; display: flex; flex-direction: column; gap: 10px;
+  }
+  .hv-msg {
+    padding: 8px 10px; border-radius: 8px; font-size: 11px; line-height: 1.45; max-width: 92%;
+  }
+  .hv-msg.a { background: var(--paper); border: 1px solid var(--rule); align-self: flex-start; border-bottom-left-radius: 2px; }
+  .hv-msg.u { background: var(--ink); color: var(--paper); align-self: flex-end; border-bottom-right-radius: 2px; }
+  .hv-chat-input {
+    margin-top: auto; padding: 8px 10px; background: var(--paper);
+    border: 1px solid var(--rule); border-radius: 6px;
+    font-size: 11px; color: var(--ink-muted);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .hv-cursor { width: 1px; height: 11px; background: var(--accent); animation: blink 1s steps(2) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ─── Section scaffolding ─── */
+  section.bloc { padding: 120px 0; border-bottom: 1px solid var(--rule); }
+  .bloc-eyebrow {
+    font-family: var(--mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.14em; color: var(--accent); margin-bottom: 16px;
+  }
+  h2.bloc-title {
+    font-family: var(--sans); font-weight: 600; font-size: 52px;
+    line-height: 1.05; letter-spacing: -0.025em;
+    max-width: 18ch; margin-bottom: 20px;
+  }
+  h2.bloc-title em { color: var(--accent); font-weight: 700; }
+  .bloc-lede { font-size: 18px; line-height: 1.55; color: var(--ink-soft); max-width: 600px; margin-bottom: 56px; }
+  .bloc-header { margin-bottom: 56px; }
+
+  /* ─── Capabilities ─── */
+  .capabilities { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .cap { padding: 28px 0; border-top: 2px solid var(--ink); }
+  .cap .num { font-family: var(--mono); font-size: 11px; letter-spacing: 0.10em; color: var(--ink-muted); margin-bottom: 14px; }
+  .cap h3 { font-size: 24px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 12px; }
+  .cap h3 em { color: var(--accent); font-weight: 700; }
+  .cap p { font-size: 14px; color: var(--ink-soft); line-height: 1.6; margin-bottom: 20px; }
+  .cap .detail { font-family: var(--mono); font-size: 11px; color: var(--ink-muted); padding-top: 16px; border-top: 1px solid var(--rule); line-height: 1.6; }
+
+  /* ─── How it works ─── */
+  .how { display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: start; }
+  .how-step { padding: 24px 0; border-top: 1px solid var(--rule); cursor: pointer; }
+  .how-step.active { border-top-color: var(--ink); border-top-width: 2px; }
+  .how-step .num { font-family: var(--mono); font-size: 11px; color: var(--ink-muted); margin-bottom: 8px; letter-spacing: 0.10em; }
+  .how-step h4 { font-size: 20px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 8px; transition: color 120ms ease; }
+  .how-step.active h4 { color: var(--ink); }
+  .how-step:not(.active) h4 { color: var(--ink-muted); }
+  .how-step p { display: none; font-size: 14px; color: var(--ink-soft); line-height: 1.6; max-width: 48ch; }
+  .how-step.active p { display: block; }
+  .how-visual {
+    background: var(--paper-deep); border-radius: 8px; border: 1px solid var(--rule);
+    padding: 32px; min-height: 380px; display: flex; flex-direction: column;
+  }
+  .flow-sources { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
+  .source-box { background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 12px; text-align: center; }
+  .source-box .name { font-size: 12px; font-weight: 500; margin-bottom: 2px; }
+  .source-box .meta { font-family: var(--mono); font-size: 10px; color: var(--ink-muted); }
+  .flow-arrow { width: 1px; height: 28px; background: var(--rule); margin: 0 auto; position: relative; }
+  .flow-arrow::after {
+    content: ''; position: absolute; bottom: 0; left: -3px;
+    border: 4px solid transparent; border-top-color: var(--ink-muted);
+  }
+  .flow-arrow-up::after {
+    content: ''; position: absolute; top: 0; bottom: auto; left: -3px;
+    border: 4px solid transparent; border-bottom-color: var(--ink-muted);
+  }
+  .flow-propper {
+    background: var(--ink); color: var(--paper); border-radius: 6px;
+    padding: 16px 20px; text-align: center; margin: 20px 0;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+  }
+  .flow-propper svg { width: 20px; height: 20px; }
+  .flow-propper .t { font-size: 14px; font-weight: 600; letter-spacing: -0.02em; }
+  .flow-outputs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 20px; }
+  .output-box { background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 14px; }
+  .output-box .t { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+  .output-box .s { font-family: var(--mono); font-size: 10px; color: var(--ink-soft); }
+
+  /* ─── Testimonial ─── */
+  .testimonial { padding: 80px 0; }
+  .quote { font-size: 36px; font-weight: 600; line-height: 1.15; letter-spacing: -0.02em; max-width: 22ch; margin-bottom: 32px; }
+  .quote em { color: var(--accent); font-weight: 700; }
+  .quote-attr { display: flex; align-items: center; gap: 14px; }
+  .quote-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--accent-tint); color: var(--accent-deep);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 600; letter-spacing: -0.02em; flex-shrink: 0;
+  }
+  .quote-person .name { font-weight: 500; font-size: 14px; }
+  .quote-person .role { font-size: 11px; color: var(--ink-muted); font-family: var(--mono); margin-top: 2px; }
+
+  /* ─── Design partners CTA ─── */
+  .cta-block {
+    background: var(--ink); color: var(--paper); border-radius: 8px;
+    padding: 72px 64px; margin: 40px 0 60px;
+    display: grid; grid-template-columns: 1.2fr 1fr; gap: 80px; align-items: end;
+  }
+  .cta-block .bloc-eyebrow { color: var(--accent-soft); }
+  .cta-block h2 { font-size: 48px; font-weight: 600; letter-spacing: -0.025em; line-height: 1.05; }
+  .cta-block h2 em { color: var(--accent-soft); font-weight: 700; }
+  .cta-block .rhs { display: flex; flex-direction: column; gap: 24px; }
+  .cta-block p { color: var(--paper); opacity: 0.75; font-size: 15px; line-height: 1.55; }
+  .cta-block ul { list-style: none; }
+  .cta-block ul li {
+    padding: 10px 0; border-top: 1px solid rgba(247,247,245,0.12);
+    font-size: 13px; display: flex; gap: 12px; align-items: center;
+    color: var(--paper); opacity: 0.85;
+  }
+  .cta-block ul li svg { width: 13px; height: 13px; color: var(--accent-soft); flex-shrink: 0; }
+  .cta-block .cta-buttons { display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+
+  /* ─── FAQ ─── */
+  .faq { display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; align-items: start; }
+  .faq-intro h2 { font-size: 36px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; margin-top: 12px; }
+  .faq-item { padding: 18px 0; border-top: 1px solid var(--rule); cursor: pointer; }
+  .faq-item:last-child { border-bottom: 1px solid var(--rule); }
+  .faq-q { display: flex; justify-content: space-between; align-items: center; gap: 16px; font-size: 15px; font-weight: 500; letter-spacing: -0.01em; }
+  .faq-plus { font-family: var(--mono); font-size: 16px; color: var(--ink-muted); flex-shrink: 0; transition: transform 120ms ease; }
+  .faq-item.open .faq-plus { transform: rotate(45deg); }
+  .faq-a { display: none; margin-top: 12px; font-size: 14px; color: var(--ink-soft); line-height: 1.6; max-width: 56ch; }
+  .faq-item.open .faq-a { display: block; }
+
+  /* ─── Footer ─── */
+  footer { padding: 64px 0 40px; background: var(--paper-deep); border-top: 1px solid var(--rule); }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; padding-bottom: 48px; }
+  .footer-col h5 { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-muted); margin-bottom: 16px; }
+  .footer-col a { display: block; font-size: 13px; color: var(--ink-soft); padding: 4px 0; transition: color 120ms ease; }
+  .footer-col a:hover { color: var(--ink); }
+  .footer-lede { font-size: 13px; color: var(--ink-soft); line-height: 1.6; margin-top: 14px; max-width: 32ch; }
+  .footer-bottom { display: flex; justify-content: space-between; padding-top: 32px; border-top: 1px solid var(--rule); font-size: 11px; color: var(--ink-muted); font-family: var(--mono); }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 1024px) {
+    h1.hero-title { font-size: 64px; }
+    h2.bloc-title { font-size: 44px; }
+    .how { grid-template-columns: 1fr; gap: 48px; }
+    .cta-block { grid-template-columns: 1fr; gap: 48px; padding: 56px 40px; }
+    .cta-block h2 { font-size: 40px; }
+  }
+  @media (max-width: 768px) {
+    .wrap { padding: 0 24px; }
+    nav.site .inner { padding: 14px 24px; gap: 16px; }
+    .nav-links { display: none; }
+    h1.hero-title { font-size: 48px; }
+    .hero { padding: 64px 0 48px; }
+    .hero-visual-body { grid-template-columns: 1fr; }
+    .hv-side, .hv-chat { display: none; }
+    section.bloc { padding: 80px 0; }
+    .capabilities { grid-template-columns: 1fr; gap: 0; }
+    .faq { grid-template-columns: 1fr; gap: 32px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="site">
+  <div class="inner">
+    <a href="#" class="brand">
+      <svg class="brand-mark" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+        <path d="M32 38 L52 46 L52 50 L32 58 L12 50 L12 46 Z" fill="#EFEFEC" stroke="#232323" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M32 24 L52 32 L52 36 L32 44 L12 36 L12 32 Z" fill="#A8C684" stroke="#232323" stroke-width="2.4" stroke-linejoin="round"/>
+        <path d="M32 10 L52 18 L52 22 L32 30 L12 22 L12 18 Z" fill="#4F7A28" stroke="#232323" stroke-width="2.4" stroke-linejoin="round"/>
+      </svg>
+      <span class="brand-text">Propper</span>
+    </a>
+    <div class="nav-links">
+      <a href="#what">What it does</a>
+      <a href="#how">How it works</a>
+      <a href="#partners">Design partners</a>
+    </div>
+    <div class="nav-cta">
+      <span class="beta-pill">Beta · Invite only</span>
+      <a href="https://tally.so/r/EkvaQo" target="_blank" rel="noopener" class="btn accent">Apply</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow"><span class="line"></span> AI for commercial property owners</div>
+    <h1 class="hero-title">Your portfolio, <em>properly</em> run.</h1>
+    <p class="hero-lede">Propper is an intelligence layer that sits on top of <strong>AppFolio</strong>. It reads your data overnight, drafts replies in your voice, and briefs you each morning on what actually needs your attention — across today, this week, and this quarter.</p>
+    <div class="hero-cta">
+      <a href="https://tally.so/r/EkvaQo" target="_blank" rel="noopener" class="btn primary large">
+        Apply for design partner access
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <span class="note">3 slots for Q2 · lifetime discount + priority support</span>
+    </div>
+    <div class="hero-partners">
+      <span class="hero-partners-label">Built with</span>
+      <div class="partner-names">
+        <span>Pacific Gateway Properties</span>
+        <span class="partner-sep">/</span>
+        <span class="partner-meta">and three more in Q2</span>
+      </div>
+    </div>
+
+    <!-- Product screenshot -->
+    <div class="hero-visual">
+      <div class="window-chrome">
+        <div class="dots">
+          <div class="wdot"></div>
+          <div class="wdot"></div>
+          <div class="wdot"></div>
+        </div>
+        <div class="window-url">propperapp.com / briefing</div>
+        <div style="width: 40px;"></div>
+      </div>
+      <div class="hero-visual-body">
+        <div class="hv-side">
+          <div class="hv-label">Today</div>
+          <div class="hv-item active"><span class="hv-dot"></span>Daily Briefing</div>
+          <div class="hv-item">Drafts · 7</div>
+          <div class="hv-item">Ask Propper</div>
+          <div class="hv-label">Portfolio</div>
+          <div class="hv-item">Properties · 12</div>
+          <div class="hv-item">Tenants · 184</div>
+          <div class="hv-item">Leases</div>
+          <div class="hv-item">Financials</div>
+          <div class="hv-label">Intelligence</div>
+          <div class="hv-item">Market Signal</div>
+          <div class="hv-item">Lease Roll</div>
+        </div>
+        <div class="hv-main">
+          <div class="hv-eye">Wed · Apr 15 · 06:42 AM</div>
+          <div class="hv-h">Quiet week so far — but <em>three things</em> want your attention today.</div>
+          <div class="hv-p">I reviewed AppFolio, your inbox, and yesterday's market news overnight. Two tenants need replies (drafts ready), one lease renewal is approaching its window.</div>
+          <div class="hv-card">
+            <span class="hv-tag action">Draft ready</span>
+            <div class="hv-card-title">Hayes Legal wants to extend — their offer is under your threshold.</div>
+            <div class="hv-card-body">Counter drafted at $42.50 with TI concession. Cites March Cushman comp at $43.80.</div>
+          </div>
+          <div class="hv-card">
+            <span class="hv-tag urgent">Urgent</span>
+            <div class="hv-card-title">HVAC at Meridian tripped overnight — vendor already dispatched.</div>
+            <div class="hv-card-body">Pending your approval on the $340 service call.</div>
+          </div>
+        </div>
+        <div class="hv-chat">
+          <div class="hv-msg a">Morning. Three items look time-sensitive today — the Hayes renewal, Meridian HVAC, and a comp worth seeing before your 10 AM.</div>
+          <div class="hv-msg u">On Hayes — soften the counter. I don't want to lose them.</div>
+          <div class="hv-msg a">Got it. Revised draft ready — framed as partnership, landing at $41.50 with TI allowance.</div>
+          <div class="hv-chat-input">
+            Ask Propper<span class="hv-cursor"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT IT DOES -->
+<section class="bloc" id="what">
+  <div class="wrap">
+    <div class="bloc-header">
+      <div class="bloc-eyebrow">What it does</div>
+      <h2 class="bloc-title">Three things, <em>done well.</em></h2>
+      <p class="bloc-lede">Propper isn't trying to replace AppFolio. It sits above it — turning your operational data into daily leverage.</p>
+    </div>
+    <div class="capabilities">
+      <div class="cap">
+        <div class="num">01 / Briefing</div>
+        <h3>A prioritized read of your portfolio, <em>every morning.</em></h3>
+        <p>Propper pulls AppFolio nightly, cross-references your inbox and public market signals, and tells you what needs attention — organized by urgent, this week, this quarter, and opportunistic.</p>
+        <div class="detail">Pulls from · AppFolio · Gmail / Outlook · Bisnow · Cushman · CBRE</div>
+      </div>
+      <div class="cap">
+        <div class="num">02 / Drafts</div>
+        <h3>Replies written in <em>your voice</em>, waiting in your Drafts.</h3>
+        <p>Propper learns how you write to each counterpart — the way you open with Michael, sign off with just initials — and puts polished first drafts in your mailbox. You edit, you send, you stay in control.</p>
+        <div class="detail">Trained on · your last 12 months of sent mail</div>
+      </div>
+      <div class="cap">
+        <div class="num">03 / Refinement</div>
+        <h3>A conversation, <em>when you need one.</em></h3>
+        <p>Ask it anything — "summarize last month's collections," "draft renewal outreach for Q3 expiries," "what did Bright Dental email about in March?" It answers with citations you can click.</p>
+        <div class="detail">Every answer sourced · audit trail by design</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="bloc" id="how" style="background: var(--paper-deep);">
+  <div class="wrap">
+    <div class="bloc-header">
+      <div class="bloc-eyebrow">How it works</div>
+      <h2 class="bloc-title">Connects once. <em>Works overnight.</em></h2>
+      <p class="bloc-lede">No migration. No new system of record. Propper reads from the tools you already use and returns work — drafts, briefings, answers — to where you already work.</p>
+    </div>
+    <div class="how">
+      <div class="how-steps">
+        <div class="how-step active" data-step="0">
+          <div class="num">Step 01</div>
+          <h4>Connect AppFolio & email</h4>
+          <p>Read-only OAuth. Takes 3 minutes. We never touch your books or your tenant-facing AppFolio surface.</p>
+        </div>
+        <div class="how-step" data-step="1">
+          <div class="num">Step 02</div>
+          <h4>Nightly sync & analysis</h4>
+          <p>Every night at 2 AM, Propper pulls the day's ledger, communications, and public market signals for your submarkets.</p>
+        </div>
+        <div class="how-step" data-step="2">
+          <div class="num">Step 03</div>
+          <h4>Morning briefing</h4>
+          <p>By 6 AM your briefing is ready — prioritized items, drafted replies, and a conversation panel for anything you want to dig into.</p>
+        </div>
+        <div class="how-step" data-step="3">
+          <div class="num">Step 04</div>
+          <h4>You stay the operator</h4>
+          <p>Propper never sends on your behalf, never commits cash, never commits you to a lease term. It drafts. You decide.</p>
+        </div>
+      </div>
+      <div class="how-visual">
+        <div class="flow-outputs">
+          <div class="output-box">
+            <div class="t">Your briefing</div>
+            <div class="s">prioritized · cited · 4 horizons</div>
+          </div>
+          <div class="output-box">
+            <div class="t">Your drafts</div>
+            <div class="s">in your mailbox · in your voice</div>
+          </div>
+        </div>
+        <div class="flow-arrow flow-arrow-up"></div>
+        <div class="flow-propper">
+          <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+            <path d="M32 38 L52 46 L52 50 L32 58 L12 50 L12 46 Z" fill="#F7F7F5"/>
+            <path d="M32 24 L52 32 L52 36 L32 44 L12 36 L12 32 Z" fill="#A8C684"/>
+            <path d="M32 10 L52 18 L52 22 L32 30 L12 22 L12 18 Z" fill="#4F7A28"/>
+          </svg>
+          <span class="t">Propper · AI reasoning layer</span>
+        </div>
+        <div class="flow-arrow flow-arrow-up"></div>
+        <div class="flow-sources">
+          <div class="source-box">
+            <div class="name">AppFolio</div>
+            <div class="meta">ledger · leases</div>
+          </div>
+          <div class="source-box">
+            <div class="name">Inbox</div>
+            <div class="meta">12mo history</div>
+          </div>
+          <div class="source-box">
+            <div class="name">Market</div>
+            <div class="meta">Bisnow · CBRE</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="bloc" style="padding: 100px 0;">
+  <div class="wrap">
+    <div class="testimonial">
+      <div class="bloc-eyebrow">Beta, week 6</div>
+      <p class="quote">"It's the first thing I read in the morning. It sees <em>things I'd miss</em> — and writes emails that sound like me, which still surprises me."</p>
+      <div class="quote-attr">
+        <div class="quote-avatar">KS</div>
+        <div class="quote-person">
+          <div class="name">Kevin Sakimoto</div>
+          <div class="role">Principal Owner, Pacific Gateway Properties · 200+</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DESIGN PARTNERS CTA -->
+<section class="bloc" id="partners" style="padding: 60px 0 120px; border-bottom: none;">
+  <div class="wrap">
+    <div class="cta-block" id="apply">
+      <div>
+        <div class="bloc-eyebrow">Design partners · Q2</div>
+        <h2>Help us build the <em>operator's tool</em> we wish existed.</h2>
+      </div>
+      <div class="rhs">
+        <p>We're bringing on five more owner-operators this quarter. You'll shape the product directly — weekly calls with the team, direct line to the founders, first access to everything.</p>
+        <ul>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            3+ properties, 50–500 units, on AppFolio
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Free for the duration of beta
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Lifetime discount after launch — locked in at signup
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Priority support, always
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Direct input on roadmap
+          </li>
+        </ul>
+        <div class="cta-buttons">
+          <a href="https://tally.so/r/EkvaQo" target="_blank" rel="noopener" class="btn accent large">Apply in 2 minutes →</a>
+          <a href="#" class="btn ghost large">Book a call</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="bloc" style="padding: 0 0 120px; border: none;">
+  <div class="wrap">
+    <div class="faq">
+      <div class="faq-intro">
+        <div class="bloc-eyebrow">Common questions</div>
+        <h2>Things early operators ask.</h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item open">
+          <div class="faq-q">Does Propper replace AppFolio? <span class="faq-plus">+</span></div>
+          <p class="faq-a">No. AppFolio remains your system of record. Propper reads from it and writes work back to places you already use — your email drafts folder, your task lists, your phone. Your AppFolio workflows don't change.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">What does Propper send on my behalf? <span class="faq-plus">+</span></div>
+          <p class="faq-a">Nothing, unless you ask. Every email sits as a draft for you to review. Every dispatch to a vendor is queued for your approval. We're an advisor, not an autopilot.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">How does it learn my voice? <span class="faq-plus">+</span></div>
+          <p class="faq-a">On connect, Propper reads 12 months of your sent mail to model how you write to different kinds of counterparts — tenants, vendors, brokers, lenders. Drafts adapt to the recipient.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">What data leaves my control? <span class="faq-plus">+</span></div>
+          <p class="faq-a">All data is tenant-isolated. We don't train shared models on your portfolio. Your emails, leases, and financials are not used to improve anyone else's Propper.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Why AppFolio only? <span class="faq-plus">+</span></div>
+          <p class="faq-a">For beta, we're going deep on one system. Yardi, MRI, and Buildium support are on the roadmap for H2.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <a href="#" class="brand">
+          <svg class="brand-mark" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+            <path d="M32 38 L52 46 L52 50 L32 58 L12 50 L12 46 Z" fill="#EFEFEC" stroke="#232323" stroke-width="2.4" stroke-linejoin="round"/>
+            <path d="M32 24 L52 32 L52 36 L32 44 L12 36 L12 32 Z" fill="#A8C684" stroke="#232323" stroke-width="2.4" stroke-linejoin="round"/>
+            <path d="M32 10 L52 18 L52 22 L32 30 L12 22 L12 18 Z" fill="#4F7A28" stroke="#232323" stroke-width="2.4" stroke-linejoin="round"/>
+          </svg>
+          <span class="brand-text" style="font-size: 16px;">Propper</span>
+        </a>
+        <p class="footer-lede">AI for owner-operators of commercial property. Built by Productive Studio. In private beta.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Product</h5>
+        <a href="#">Propper</a>
+        <a href="#">Join the beta</a>
+        <a href="#">Support</a>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <a href="#">About</a>
+        <a href="#">Careers</a>
+        <a href="#">Press</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Security</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Propper Labs, Inc.</span>
+      <span>propper.co</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.how-step').forEach(step => {
+    step.addEventListener('click', () => {
+      document.querySelectorAll('.how-step').forEach(s => s.classList.remove('active'));
+      step.classList.add('active');
+    });
+  });
+
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.addEventListener('click', () => item.classList.toggle('open'));
+  });
+</script>
+
+</body>
+</html>
