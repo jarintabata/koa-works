@@ -140,7 +140,7 @@
   }
   .hero-visual-body {
     display: grid; grid-template-columns: 180px 1fr 300px;
-    background: var(--paper); min-height: 460px;
+    background: var(--paper); min-height: 540px;
   }
   .hv-side {
     background: var(--paper-deep); border-right: 1px solid var(--rule);
@@ -262,7 +262,7 @@
 
   /* ─── Testimonial ─── */
   .testimonial { padding: 80px 0; }
-  .quote { font-size: 36px; font-weight: 600; line-height: 1.15; letter-spacing: -0.02em; max-width: 22ch; margin-bottom: 32px; }
+  .quote { font-size: 44px; font-weight: 600; line-height: 1.1; letter-spacing: -0.025em; max-width: 22ch; margin-bottom: 36px; }
   .quote em { color: var(--accent); font-weight: 700; }
   .quote-attr { display: flex; align-items: center; gap: 14px; }
   .quote-avatar {
@@ -293,6 +293,10 @@
   }
   .cta-block ul li svg { width: 13px; height: 13px; color: var(--accent-soft); flex-shrink: 0; }
   .cta-block .cta-buttons { display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+  .founder-note {
+    font-size: 13px; line-height: 1.65; color: rgba(247,247,245,0.55);
+    border-top: 1px solid rgba(247,247,245,0.12); padding-top: 20px; margin-top: 4px;
+  }
 
   /* ─── FAQ ─── */
   .faq { display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; align-items: start; }
@@ -307,7 +311,7 @@
 
   /* ─── Footer ─── */
   footer { padding: 64px 0 40px; background: var(--paper-deep); border-top: 1px solid var(--rule); }
-  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; padding-bottom: 48px; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; padding-bottom: 48px; }
   .footer-col h5 { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-muted); margin-bottom: 16px; }
   .footer-col a { display: block; font-size: 13px; color: var(--ink-soft); padding: 4px 0; transition: color 120ms ease; }
   .footer-col a:hover { color: var(--ink); }
@@ -367,7 +371,7 @@
   <div class="wrap">
     <div class="eyebrow"><span class="line"></span> AI for commercial property owners</div>
     <h1 class="hero-title">Your portfolio, <em>properly</em> run.</h1>
-    <p class="hero-lede">Propper is an intelligence layer that sits on top of <strong>AppFolio</strong>. It reads your data overnight, drafts replies in your voice, and briefs you each morning on what actually needs your attention — across today, this week, and this quarter.</p>
+    <p class="hero-lede">It reads your data overnight, drafts replies in your voice, and briefs you each morning on what actually needs your attention — across today, this week, and this quarter.</p>
     <div class="hero-cta">
       <a href="https://tally.so/r/EkvaQo" target="_blank" rel="noopener" class="btn primary large">
         Apply for design partner access
@@ -460,7 +464,7 @@
         <div class="detail">Trained on · your last 12 months of sent mail</div>
       </div>
       <div class="cap">
-        <div class="num">03 / Refinement</div>
+        <div class="num">03 / Ask Propper</div>
         <h3>A conversation, <em>when you need one.</em></h3>
         <p>Ask it anything — "summarize last month's collections," "draft renewal outreach for Q3 expiries," "what did Bright Dental email about in March?" It answers with citations you can click.</p>
         <div class="detail">Every answer sourced · audit trail by design</div>
@@ -541,7 +545,7 @@
 </section>
 
 <!-- TESTIMONIAL -->
-<section class="bloc" style="padding: 100px 0;">
+<section class="bloc" style="padding: 100px 0; background: var(--paper-deep);">
   <div class="wrap">
     <div class="testimonial">
       <div class="bloc-eyebrow">Beta, week 6</div>
@@ -589,9 +593,10 @@
             Direct input on roadmap
           </li>
         </ul>
+        <p class="founder-note">We're Productive Studio. We built Propper because we kept watching capable operators lose hours to their inbox and miss things that cost them money. We're building the tool we wish existed — and we want to build it with you.</p>
         <div class="cta-buttons">
           <a href="https://tally.so/r/EkvaQo" target="_blank" rel="noopener" class="btn accent large">Apply in 2 minutes →</a>
-          <a href="#" class="btn ghost large">Book a call</a>
+          <!-- TODO: add Calendly or cal.com link here -->
         </div>
       </div>
     </div>
@@ -627,6 +632,10 @@
           <div class="faq-q">Why AppFolio only? <span class="faq-plus">+</span></div>
           <p class="faq-a">For beta, we're going deep on one system. Yardi, MRI, and Buildium support are on the roadmap for H2.</p>
         </div>
+        <div class="faq-item">
+          <div class="faq-q">What does Propper cost? <span class="faq-plus">+</span></div>
+          <p class="faq-a">Beta is free for design partners, with a lifetime discount locked in at launch. Pricing will be announced when we exit beta. Design partners always pay less — that's the deal.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -651,14 +660,6 @@
         <h5>Product</h5>
         <a href="#">Propper</a>
         <a href="https://tally.so/r/EkvaQo" target="_blank">Join the beta</a>
-        <a href="#">Support</a>
-      </div>
-      <div class="footer-col">
-        <h5>Company</h5>
-        <a href="#">About</a>
-        <a href="#">Careers</a>
-        <a href="#">Press</a>
-        <a href="#">Contact</a>
       </div>
       <div class="footer-col">
         <h5>Legal</h5>
